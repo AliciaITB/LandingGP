@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GLASS POINT — La alineación no se improvisa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav">
+    <div class="nav__inner container">
+      <a href="#" class="nav__logo">GLASS POINT</a>
+      <nav class="nav__links">
+        <a href="#features" class="nav__link">Características</a>
+        <a href="#how" class="nav__link">Cómo funciona</a>
+        <a href="#testimonials" class="nav__link">Capitanes</a>
+        <a href="#archetypes" class="nav__link">Arquetipos</a>
+      </nav>
+      <div class="nav__actions">
+        <a href="#" class="btn btn--ghost">Login</a>
+        <a href="#signup" class="btn btn--primary">Únete a la Beta</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__inner container">
+      <div class="hero__content">
+        <span class="label label--accent">Para capitanes que compiten de verdad</span>
+        <h1 class="hero__headline">La alineación<br/>no se improvisa</h1>
+        <p class="hero__subtitle"><span class="glassPoint">GLASS POINT</span> te ayuda a entender cómo juega tu equipo, combinar perfiles y tomar decisiones con criterio antes del partido.</p>
+        <div class="hero__stats" aria-label="Beneficios principales">
+          <div><strong>5</strong><span>arquetipos</span></div>
+          <div><strong>∞</strong><span>escenarios</span></div>
+          <div><strong>1</strong><span>decisión final</span></div>
+        </div>
+        <div class="hero__ctas">
+          <a href="#signup" class="btn btn--primary btn--lg">Únete a la Beta →</a>
+          <a href="#how" class="btn btn--outlined btn--lg">Ver cómo funciona</a>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <div class="strategy-board" data-combination="0" aria-label="Simulador visual de combinaciones">
+          <div class="strategy-board__top">
+            <span class="strategy-board__eyebrow">Simulador de pareja</span>
+            <span class="strategy-board__status" id="comboStatus">Mejor encaje</span>
+          </div>
+          <div class="court-diagram" id="courtDiagram">
+            <div class="court-diagram__zone court-diagram__zone--left"></div>
+            <div class="court-diagram__zone court-diagram__zone--right"></div>
+            <div class="court-diagram__net"></div>
+            <div class="court-diagram__node court-diagram__node--a" data-role="Arquitecta">A</div>
+            <div class="court-diagram__node court-diagram__node--b" data-role="Definidora">B</div>
+            <div class="court-diagram__node court-diagram__node--c" data-role="Defensora">C</div>
+            <div class="court-diagram__node court-diagram__node--d" data-role="Impulsora">D</div>
+            <svg class="court-diagram__lines" viewBox="0 0 280 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="combo-line combo-line--good" d="M58 62 C92 32 145 34 185 62"/>
+              <path class="combo-line combo-line--risk" d="M58 62 C96 120 132 155 206 158"/>
+              <path class="combo-line combo-line--neutral" d="M185 62 C174 110 158 142 112 158"/>
+            </svg>
+            <button class="strategy-board__button" type="button" id="switchCombo">Ver otra combinación</button>
+          </div>
+          <div class="strategy-board__insight" id="comboInsight">Arquitecta + Definidora: una sostiene, la otra decide.</div>
+        </div>
+      </div>    </div>
+  </section>
+
+  <div class="tactical-divider" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <!-- BLOQUE IMPACTO -->
+  <section class="impact">
+    <div class="container">
+      <div class="impact__kicker">La verdad incómoda</div>
+      <p class="impact__text">No pierdes partidos por nivel.<br/><span class="impact__highlight">Los pierdes por combinaciones.</span></p>
+      <div class="impact__mini">Cuando la pareja no encaja, el equipo lo nota antes que el marcador.</div>
+    </div>
+  </section>
+
+  <!-- PROBLEMA -->
+  <section class="problem" id="problem">
+    <div class="container">
+      <div class="problem__header">
+        <h2 class="section-title">Lo difícil no es elegir. Es acertar.</h2>
+        <p class="problem__intro">Tienes buenas jugadoras.<br/>Pero no todas funcionan juntas.<br/>Y eso lo descubres tarde.</p>
+      </div>
+      <div class="pain-grid">
+        <div class="pain-card">
+          <div class="pain-card__icon">⚡</div>
+          <h3 class="pain-card__title">Presión real</h3>
+          <p class="pain-card__text">Quieres ser justa, pero también quieres ganar. Y cada decisión deja a alguien fuera.</p>
+        </div>
+        <div class="pain-card pain-card--highlighted">
+          <div class="pain-card__icon">🔗</div>
+          <h3 class="pain-card__title">Sensaciones sin estructura</h3>
+          <p class="pain-card__text">Sabes quién defiende mejor, quién define, quién se bloquea. Pero no sabes cómo encaja todo eso.</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-card__icon">🎯</div>
+          <h3 class="pain-card__title">Decidir a ciegas</h3>
+          <p class="pain-card__text">Publicas la alineación… y cruzas los dedos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOMENTO WOW: ANTES / DESPUÉS -->
+  <section class="comparison" id="wow">
+    <div class="container">
+      <div class="comparison__header">
+        <span class="label label--accent">Momento GLASS POINT</span>
+        <h2 class="section-title section-title--center">De cruzar los dedos a tener un plan</h2>
+      </div>
+      <div class="comparison__grid">
+        <div class="comparison__col comparison__col--before">
+          <span class="comparison__tag">Antes</span>
+          <h3>Intuición bajo presión</h3>
+          <ul>
+            <li>“Creo que juntas pueden funcionar.”</li>
+            <li>Variables en la cabeza.</li>
+            <li>Decisiones difíciles de explicar.</li>
+          </ul>
+        </div>
+        <div class="comparison__switch" aria-hidden="true">→</div>
+        <div class="comparison__col comparison__col--after">
+          <span class="comparison__tag">Con GLASS POINT</span>
+          <h3>Criterio antes del partido</h3>
+          <ul>
+            <li>Ves roles, encajes y riesgos.</li>
+            <li>Simulas alternativas reales.</li>
+            <li>Decides y puedes defenderlo.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tactical-divider tactical-divider--reverse" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <!-- SOLUCIÓN -->
+  <section class="solution" id="features">
+    <div class="container">
+      <div class="solution__header">
+        <h2 class="section-title">Empieza a ver el equipo de verdad</h2>
+        <p class="solution__intro"><span class="glassPoint">GLASS POINT</span> convierte sensaciones en estructura. Y decisiones en algo que puedes entender.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-card__num">01</span>
+          <h3 class="feature-card__title">Perfiles de juego (arquetipos)</h3>
+          <p class="feature-card__text">Cada jugadora tiene un rol: quién construye, quién acelera, quién ordena. <span class="glassPoint">GLASS POINT</span> identifica estos perfiles y te enseña cómo encajan entre sí.</p>
+        </div>
+        <div class="feature-card feature-card--dark">
+          <span class="feature-card__num">02</span>
+          <h3 class="feature-card__title">Combinaciones que funcionan</h3>
+          <p class="feature-card__text">No es poner a las mejores. Es poner a las que se potencian. Descubre qué parejas tienen sentido antes de verlas fallar en pista.</p>
+          <div class="feature-card__toggle">
+            <span class="toggle-dot toggle-dot--blue"></span>
+            <span class="toggle-dot toggle-dot--orange"></span>
+          </div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-card__num">03</span>
+          <h3 class="feature-card__title">Simula antes de decidir</h3>
+          <p class="feature-card__text">Prueba alineaciones. Cambia piezas. Anticipa lo que puede pasar antes de que empiece el partido.</p>
+          <div class="feature-card__bars">
+            <div class="bar bar--primary"></div>
+            <div class="bar bar--secondary"></div>
+            <div class="bar bar--tertiary"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFERENCIAL -->
+  <section class="differential">
+    <div class="container">
+      <div class="differential__inner">
+        <div>
+          <span class="label label--dark">Sistema de juego</span>
+          <h2 class="differential__title">El pádel es un juego de roles</h2>
+        </div>
+        <div class="differential__body">
+          <p>Hay jugadoras que sostienen el punto. Otras que lo rompen. Otras que ordenan cuando todo se desordena.</p>
+          <p class="differential__emphasis">Cuando entiendes eso, el equipo cambia.</p>
+          <p><span class="glassPoint glassPoint--light">GLASS POINT</span> está construido sobre esa idea.</p>
+          <div class="role-orbit" aria-hidden="true">
+            <span class="role-orbit__core">GP</span>
+            <span class="role-orbit__item role-orbit__item--one">Control</span>
+            <span class="role-orbit__item role-orbit__item--two">Riesgo</span>
+            <span class="role-orbit__item role-orbit__item--three">Orden</span>
+            <span class="role-orbit__item role-orbit__item--four">Ritmo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARQUETIPOS -->
+  <section class="archetypes" id="archetypes">
+    <div class="container">
+      <div class="archetypes__header">
+        <span class="label label--accent">Mapa de roles</span>
+        <h2 class="section-title section-title--center">5 arquetipos para leer mejor a tu equipo</h2>
+        <p>Pasa el cursor por cada arquetipo y mira cómo cambian sus mejores encajes.</p>
+      </div>
+      <div class="archetypes-grid" id="archetypeGrid">
+        <div class="archetype-card" data-role="arquitecta" data-compatible="definidora,impulsora">
+          <div class="archetype-card__icon">◇</div>
+          <h3 class="archetype-card__name">Arquitecta</h3>
+          <p class="archetype-card__desc">Controla ritmo, coloca bola y prepara el punto para que la pareja pueda decidir.</p>
+          <span class="archetype-card__tag tag--control">CONTROL · PACIENCIA</span>
+        </div>
+        <div class="archetype-card " data-role="definidora" data-compatible="arquitecta,defensora">
+          <div class="archetype-card__icon">●</div>
+          <h3 class="archetype-card__name">Definidora</h3>
+          <p class="archetype-card__desc">Busca cerrar puntos, acelerar en la red y convertir ventajas en juegos.</p>
+          <span class="archetype-card__tag tag--aggressive">ATAQUE · DECISIÓN</span>
+        </div>
+        <div class="archetype-card" data-role="defensora" data-compatible="definidora,impulsora">
+          <div class="archetype-card__icon">◐</div>
+          <h3 class="archetype-card__name">Defensora</h3>
+          <p class="archetype-card__desc">Sostiene los momentos complejos, baja errores y mantiene vivo al equipo.</p>
+          <span class="archetype-card__tag tag--balance">EQUILIBRIO · DEFENSA</span>
+        </div>
+        <div class="archetype-card" data-role="impulsora" data-compatible="arquitecta,competidora">
+          <div class="archetype-card__icon">↯</div>
+          <h3 class="archetype-card__name">Impulsora</h3>
+          <p class="archetype-card__desc">Cambia el ritmo, incomoda y rompe patrones cuando el partido se atasca.</p>
+          <span class="archetype-card__tag tag--tempo">RITMO · PRESIÓN</span>
+        </div>
+        <div class="archetype-card" data-role="competidora" data-compatible="impulsora,defensora">
+          <div class="archetype-card__icon">＋</div>
+          <h3 class="archetype-card__name">Competidora</h3>
+          <p class="archetype-card__desc">Lee el partido, comunica, ajusta posiciones y da sentido táctico a la pareja.</p>
+          <span class="archetype-card__tag tag--order">ORDEN · TÁCTICA</span>
+        </div>
+      </div>
+      <div class="archetypes__insight" id="archetypeInsight">Elige un arquetipo para ver sus mejores conexiones.</div>
+    </div>
+  </section>
+
+  <!-- MOMENTO WOW: LAB DE ALINEACIÓN -->
+  <section class="lineup-lab">
+    <div class="container lineup-lab__inner">
+      <div class="lineup-lab__copy">
+        <span class="label label--accent">Prueba-error sin pagar el precio</span>
+        <h2 class="section-title">Simula una alineación antes de publicarla</h2>
+        <p>Un pequeño gesto cambia todo: una jugadora de rol equivocado puede desordenar la pareja; una combinación bien leída puede darte el partido.</p>
+      </div>
+      <div class="lineup-lab__panel">
+        <div class="lineup-lab__row is-active">
+          <span>Arquitecta + Definidora</span><strong>92%</strong>
+        </div>
+        <div class="lineup-lab__row">
+          <span>Impulsora + Competidora</span><strong>84%</strong>
+        </div>
+        <div class="lineup-lab__row is-risk">
+          <span>Definidora + Impulsora</span><strong>61%</strong>
+        </div>
+        <div class="lineup-lab__pulse">Mejor equilibrio detectado</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section class="how-it-works" id="how">
+    <div class="container">
+      <h2 class="section-title section-title--center">De intuición a criterio</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step__number">1</div>
+          <div class="step__content">
+            <h3 class="step__title">Entiende a tu equipo</h3>
+            <p class="step__text">Recoge cómo juega cada jugadora. No solo nivel, también comportamiento en pista.</p>
+          </div>
+        </div>
+        <div class="step__connector"></div>
+        <div class="step">
+          <div class="step__number">2</div>
+          <div class="step__content">
+            <h3 class="step__title">Explora combinaciones</h3>
+            <p class="step__text">Empiezas a ver qué encaja… y qué no.</p>
+          </div>
+        </div>
+        <div class="step__connector"></div>
+        <div class="step">
+          <div class="step__number">3</div>
+          <div class="step__content">
+            <h3 class="step__title">Decide con intención</h3>
+            <p class="step__text">No es solo intuición. Es intuición con estructura.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPTION -->
+  <section class="action-caption">
+    <div class="container">
+      <p class="action-caption__text">Cuando la pareja encaja, se nota en el primer punto.</p>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="testimonials__header">
+        <h2 class="section-title section-title--center">Diseñado con capitanes reales</h2>
+        <p class="testimonials__sub">Equipos amateur que viven esta presión cada semana.</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <p class="testimonial-card__quote">"Sabes que dos jugadoras son buenas, pero no sabes si juntas funcionan. Esto te lo deja claro antes del partido."</p>
+          <div class="testimonial-card__author">
+            <div class="testimonial-card__avatar">M</div>
+            <span class="testimonial-card__name">Capitán, Liga Local</span>
+          </div>
+        </div>
+        <div class="testimonial-card testimonial-card--alt">
+          <p class="testimonial-card__quote">"Siempre he ido por intuición. Esto es como ponerle orden a lo que ya sentía."</p>
+          <div class="testimonial-card__author">
+            <div class="testimonial-card__avatar testimonial-card__avatar--orange">S</div>
+            <span class="testimonial-card__name">Capitán, División 2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMAIL CAPTURE -->
+  <section class="signup" id="signup">
+    <div class="container">
+      <div class="signup__inner">
+        <h2 class="signup__title">Si eres capitán, esto es para ti</h2>
+        <p class="signup__subtitle">Estamos trabajando con un grupo reducido de equipos. Si te tomas en serio tus alineaciones, deberías estar dentro.</p>
+        <form class="signup__form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="name">Tu nombre</label>
+            <input class="form-input" type="text" id="name" placeholder="Juan García" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email">Correo electrónico</label>
+            <input class="form-input" type="email" id="email" placeholder="juan@ejemplo.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="category">Categoría del equipo (opcional)</label>
+            <select class="form-input form-select" id="category">
+              <option value="">Selecciona tu categoría</option>
+              <option value="div1">División 1</option>
+              <option value="div2">División 2</option>
+              <option value="div3">División 3</option>
+              <option value="div4">División 4</option>
+              <option value="social">Otra / Social</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn--primary btn--full btn--lg">Solicitar acceso</button>
+        </form>
+        <p class="signup__success" id="successMsg">¡Gracias por tu interés! Pronto te contactaremos con los detalles de acceso a la beta.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__brand">
+          <span class="footer__logo">GLASS POINT</span>
+          <p class="footer__desc">Inteligencia de equipo para pádel competitivo. Mejores decisiones antes de entrar en pista.</p>
+        </div>
+        <div class="footer__contact">
+          <span class="footer__contact-title">Contacto</span>
+          <a href="mailto:hola@glasspoint.app" class="footer__email">hola@glasspoint.app</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copy">© 2026 GLASS POINT. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
