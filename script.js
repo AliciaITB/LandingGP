@@ -34,6 +34,19 @@ const pages = [
       "Funcionalidad","Diseño: Deberemos actualizar el diseño según logo."   ]
   },
 
+  
+
+    {
+    title: "FormAI",
+    version: "v1.0",
+    date: "2026-05-01",
+    description: "Página con los formularios, calculos de arquetipo y demás.",
+    labels: [{ text: "Dev", color: "v-blue" }],
+    accentColor: "var(--accent-pink)",
+    url: "https://form-ai-padel.replit.app/",
+    checks: [
+      "Página de arquetipos","Calculos de arquetipos","Pantallas en general", "Diseños"   ]
+  },
   {
     title: "Instagram",
     version: "v0.0",
