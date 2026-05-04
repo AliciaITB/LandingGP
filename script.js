@@ -47,6 +47,17 @@ const pages = [
     checks: [
       "Página de arquetipos","Calculos de arquetipos","Pantallas en general", "Diseños"   ]
   },
+    {
+    title: "Diseño",
+    version: "v0.0",
+    date: "2026-05-01",
+    description: "Crear cuenta",
+    labels: [{ text: "Marketing", color: "v-pink" }],
+    accentColor: "var(--accent-pink)",
+    url: "https://stitch.withgoogle.com/projects/9622752504950992612",
+    checks: [
+      "Diseñar"   ]
+  },
   {
     title: "Instagram",
     version: "v0.0",
@@ -58,6 +69,7 @@ const pages = [
     checks: [
       "Crear cuenta","Publicar contenido"   ]
   },
+  
 ];
 
 function renderSvgCheck() {
