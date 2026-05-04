@@ -5,7 +5,7 @@ const pages = [
     version: "v1.0",
     date: "2026-05-01",
     description: "Página principal con la información de Glass Point",
-    labels: [{ text: "Marketing", color: "v-pink" }, { text: "Dev", color: "v-blue" }],
+    labels: [{ text: "Marketing", color: "v-pink" }],
     accentColor: "var(--accent-pink)",
     url: "Landing/index.html",
     checks: [
@@ -16,13 +16,35 @@ const pages = [
     version: "v2.0",
     date: "2026-05-01",
     description: "Amarillos - Página principal con la información de Glass Point",
-    labels: [{ text: "Marketing", color: "v-pink" }, { text: "Dev", color: "v-blue" }],
+    labels: [{ text: "Marketing", color: "v-pink" }],
     accentColor: "var(--accent-pink)",
     url: "Landing/index.html",
     checks: [
       "Dinamismo, se entiendes?","Mismos bloques de información que anterior, mismos cambios?", "Dónde poner el logo"   ]
   },
+{
+    title: "Desarrollo",
+    version: "v1.0",
+    date: "2026-05-01",
+    description: "Desarrollo del proyecto hecho por Yeneviel. Aquí se revisará la parte de desarrollo, funcionalidades, diseño, etc. CoordinadorEmail: sytemAdmin@gmail.com (contraseña: nombre antes de la @) , email: coachUser@gmail.com (contraseña: coachUser), email: captainUser@gmail.com (contraseña: captainUser), email: user1@gmail.com (contraseña: user123!), email: user2@gmail.com (contraseña: user123!)",
+    labels: [{ text: "Dev", color: "v-blue" }],
+    accentColor: "var(--accent-pink)",
+    url: "https://padel-ai-app-api.vercel.app/",
+    checks: [
+      "Funcionalidad","Diseño: Deberemos actualizar el diseño según logo."   ]
+  },
 
+  {
+    title: "Instagram",
+    version: "v0.0",
+    date: "2026-05-01",
+    description: "Crear cuenta",
+    labels: [{ text: "Marketing", color: "v-pink" }],
+    accentColor: "var(--accent-pink)",
+    url: "",
+    checks: [
+      "Crear cuenta","Publicar contenido"   ]
+  },
 ];
 
 function renderSvgCheck() {
