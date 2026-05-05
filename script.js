@@ -18,7 +18,7 @@ const pages = [
     description: "Amarillos - Página principal con la información de Glass Point",
     labels: [{ text: "Marketing", color: "v-pink" }],
     accentColor: "var(--accent-pink)",
-    url: "Landing/index.html",
+    url: "LandingAmarillo_v2/index.html",
     checks: [
       "Dinamismo, se entiendes?","Mismos bloques de información que anterior, mismos cambios?", "Dónde poner el logo"   ]
   },
