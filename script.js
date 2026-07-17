@@ -1,5 +1,16 @@
 
 const pages = [
+    {
+    title: "Mapa de Navegación",
+    version: "v1.0",
+    date: "2026-07-18",
+    description: "Mapa de navegación del proyecto, con la estructura de las páginas y sus relaciones.",
+    labels: [{ text: "Dev", color: "v-blue" }],
+    accentColor: "var(--accent-pink)",
+    url: "navigation-map/index.html",
+    checks: [
+      "Navegación de las páginas","Relaciones entre páginas", "Roles"    ]
+  },
   {
     title: "Landing - Estática",
     version: "v1.0",

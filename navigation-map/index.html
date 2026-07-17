@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Glass Point - Mapa de navegacion</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --ink: #172033;
+      --muted: #657086;
+      --line: #d8dee8;
+      --card: #ffffff;
+      --public: #0f766e;
+      --player: #2563eb;
+      --sport: #7c3aed;
+      --admin: #b45309;
+      --state: #0f172a;
+      --good: #059669;
+      --warn: #d97706;
+      --bad: #dc2626;
+      --shadow: 0 18px 50px rgba(23, 32, 51, .11);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.9), rgba(246,247,249,.97)),
+        radial-gradient(circle at 8% 4%, rgba(15,118,110,.12), transparent 30%),
+        radial-gradient(circle at 96% 10%, rgba(124,58,237,.12), transparent 28%);
+    }
+
+    .page {
+      width: min(1460px, calc(100vw - 48px));
+      margin: 0 auto;
+      padding: 40px 0 56px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 26px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(38px, 5vw, 72px);
+      line-height: .96;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.5;
+      margin: 18px 0 0;
+      max-width: 820px;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(216,222,232,.88);
+      border-radius: 8px;
+      padding: 14px 16px;
+      box-shadow: 0 10px 28px rgba(23,32,51,.07);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .legend {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 22px 0 28px;
+    }
+
+    .pill, .tag, .state-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.82);
+      color: var(--muted);
+    }
+
+    .pill { padding: 8px 11px; font-size: 13px; }
+    .tag { padding: 3px 7px; font-size: 11px; }
+    .state-badge { padding: 5px 9px; font-size: 12px; font-weight: 700; }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--player);
+    }
+
+    .dot.public { background: var(--public); }
+    .dot.player { background: var(--player); }
+    .dot.sport { background: var(--sport); }
+    .dot.admin { background: var(--admin); }
+    .dot.state { background: var(--state); }
+
+    .board, .panel, .shot {
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(216,222,232,.95);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .board { padding: 22px; overflow: hidden; }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(245px, 1fr));
+      gap: 16px;
+    }
+
+    .lane {
+      border: 1px solid rgba(216,222,232,.9);
+      border-radius: 8px;
+      background: rgba(255,255,255,.78);
+      padding: 14px;
+      min-height: 560px;
+    }
+
+    .lane h2 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      letter-spacing: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .lane h2 span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .screen {
+      border: 1px solid rgba(216,222,232,.95);
+      border-left: 5px solid var(--player);
+      background: var(--card);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 8px 24px rgba(23,32,51,.06);
+      break-inside: avoid;
+    }
+
+    .screen.public { border-left-color: var(--public); }
+    .screen.player { border-left-color: var(--player); }
+    .screen.sport { border-left-color: var(--sport); }
+    .screen.admin { border-left-color: var(--admin); }
+    .screen.state { border-left-color: var(--state); }
+
+    .screen h3 {
+      margin: 0 0 7px;
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
+    code {
+      display: inline-block;
+      max-width: 100%;
+      color: #26344d;
+      background: #f1f4f8;
+      border: 1px solid #e2e7ef;
+      padding: 3px 6px;
+      border-radius: 6px;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+      margin: 1px 0;
+    }
+
+    .screen p, .panel p {
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.42;
+      margin: 8px 0 0;
+    }
+
+    .tagrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 9px;
+    }
+
+    .map-section {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .panel { padding: 18px; box-shadow: 0 12px 34px rgba(23,32,51,.08); }
+    .panel h2 { margin: 0 0 12px; font-size: 20px; }
+    .panel h3 { margin: 16px 0 8px; font-size: 15px; }
+
+    .states {
+      display: grid;
+      gap: 10px;
+    }
+
+    .state-row {
+      display: grid;
+      grid-template-columns: minmax(145px, .85fr) 1.35fr;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .state-row strong {
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .state-row span {
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.35;
+    }
+
+    .arrow-flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .arrow-flow b {
+      color: #8792a3;
+      font-size: 18px;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .shot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .shot { overflow: hidden; box-shadow: 0 10px 28px rgba(23,32,51,.08); }
+
+    .browserbar {
+      height: 28px;
+      border-bottom: 1px solid var(--line);
+      background: #f4f6f9;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 0 10px;
+    }
+
+    .browserbar i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #c8d0dc;
+    }
+
+    .placeholder {
+      min-height: 150px;
+      padding: 18px;
+      display: grid;
+      align-content: center;
+      gap: 8px;
+      background:
+        linear-gradient(135deg, rgba(37,99,235,.08), transparent),
+        linear-gradient(180deg, #fff, #f8fafc);
+    }
+
+    .placeholder strong { font-size: 15px; }
+    .placeholder span { color: var(--muted); font-size: 12.5px; line-height: 1.35; }
+
+    .placeholder img.screenshots {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      box-shadow: 0 8px 24px rgba(23,32,51,.06);
+    }
+
+    .screenshot-link {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .screenshot-link:focus-visible {
+      outline: 3px solid rgba(37,99,235,.45);
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
+
+    .open-shot {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 6px;
+      color: #2563eb;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .open-shot:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      color: var(--muted);
+      margin-top: 22px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 1100px) {
+      header, .map-section { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: repeat(2, minmax(245px, 1fr)); }
+      .shot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 680px) {
+      .page { width: min(100vw - 28px, 1440px); padding-top: 24px; }
+      .flow, .shot-grid, .summary, .state-row { grid-template-columns: 1fr; }
+      .lane { min-height: auto; }
+    }
+
+    @media print {
+      body { background: white; }
+      .page { width: 100%; padding: 0; }
+      .board, .panel, .shot, .metric { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div>
+        <h1>Mapa de navegacion Glass Point</h1>
+        <p class="subtitle">Esquema visual actualizado con las pantallas actuales, la separacion entre Convocatorias y Partidos, los dashboards por rol y los cambios de estado que gobiernan convocatorias, partidos y formularios postpartido.</p>
+      </div>
+      <section class="summary" aria-label="Resumen">
+        <div class="metric"><strong>41</strong><span>rutas activas en App.tsx</span></div>
+        <div class="metric"><strong>5</strong><span>roles de navegacion</span></div>
+        <div class="metric"><strong>6</strong><span>estados de convocatoria</span></div>
+        <div class="metric"><strong>3</strong><span>estados visuales de partido</span></div>
+      </section>
+    </header>
+
+    <div class="legend">
+      <span class="pill"><i class="dot public"></i>Publico</span>
+      <span class="pill"><i class="dot player"></i>Jugador</span>
+      <span class="pill"><i class="dot sport"></i>Gestion deportiva</span>
+      <span class="pill"><i class="dot admin"></i>Admin / coordinacion</span>
+      <span class="pill"><i class="dot state"></i>Estados de negocio</span>
+    </div>
+
+    <section class="board" aria-label="Pantallas por area">
+      <div class="flow">
+        <section class="lane">
+          <h2>Entrada y rol <span>publico</span></h2>
+          <article class="screen public">
+            <h3>Landing / raiz</h3>
+            <code>/</code>
+            <p>Sin sesion muestra landing. Con sesion entra en el resolver de rol y redirige al dashboard adecuado.</p>
+            <div class="tagrow"><span class="tag">auto-role</span><span class="tag">sesion</span></div>
+          </article>
+          <article class="screen public">
+            <h3>Login jugador</h3>
+            <code>/login-jugador</code>
+            <p>Entrada principal con Google o flujo de autenticacion de jugador.</p>
+          </article>
+          <article class="screen public">
+            <h3>Login clasico</h3>
+            <code>/login-clasico</code>
+            <p>Entrada con email y password para pruebas y usuarios locales.</p>
+          </article>
+          <article class="screen public">
+            <h3>Registro jugador</h3>
+            <code>/registro-jugador</code> <code>/player/register</code>
+            <p>Alta con club obligatorio, mano dominante y posicion natural en pista.</p>
+          </article>
+          <article class="screen admin">
+            <h3>Redireccion por rol</h3>
+            <code>AppContent</code>
+            <p>Admin va a <code>/admin</code>, coordinador a <code>/coordinator</code>, capitan a <code>/captain</code>, coach a <code>/players</code> y jugador a <code>/player/dashboard</code>.</p>
+          </article>
+        </section>
+
+        <section class="lane">
+          <h2>Jugador <span>sesion</span></h2>
+          <article class="screen player">
+            <h3>Mi dashboard</h3>
+            <code>/player/dashboard</code>
+            <p>Inicio del jugador: cards de nivel, arquetipo, partidos, liga/equipo y convocatorias pendientes.</p>
+          </article>
+          <article class="screen player">
+            <h3>Mi perfil</h3>
+            <code>/player/profile</code>
+            <p>Datos personales, mano dominante, posicion, arquetipo, partidos y equipos.</p>
+          </article>
+          <article class="screen player">
+            <h3>Autoevaluacion</h3>
+            <code>/player/questionnaire</code> <code>/forms/autoeval</code> <code>/forms/autoeval/edit</code>
+            <p>Formulario dinamico activo para autoevaluacion.</p>
+          </article>
+          <article class="screen player">
+            <h3>Postpartido</h3>
+            <code>/formulario/postpartido/:playerId</code>
+            <p>Formulario dinamico de feedback postpartido. Se habilita cuando el partido esta en pdtPostPartido.</p>
+          </article>
+          <article class="screen player">
+            <h3>Detalle postpartido</h3>
+            <code>/dashboard/players/:id/postpartidos/:ppId</code>
+            <p>Consulta historica del feedback guardado.</p>
+          </article>
+          <article class="screen player">
+            <h3>Entrenamiento y resumen</h3>
+            <code>/PanelEntrenamiento</code> <code>/dashboard/players/:id</code>
+            <p>Panel de entrenamiento y ficha analitica de jugador.</p>
+          </article>
+        </section>
+
+        <section class="lane">
+          <h2>Convocatorias y partidos <span>gestion</span></h2>
+          <article class="screen sport">
+            <h3>Convocatorias</h3>
+            <code>/callups</code>
+            <p>Punto de menu horizontal. Filtros por torneo/competicion y equipo; orden por fecha/jornada.</p>
+            <div class="tagrow"><span class="tag">capitan</span><span class="tag">coach</span><span class="tag">coordinador</span></div>
+          </article>
+          <article class="screen sport">
+            <h3>Crear convocatoria</h3>
+            <code>/callups/new</code>
+            <p>Alta por capitan/gestion con torneo, objetivo, minimo de jugadoras, club rival y direccion de juego.</p>
+          </article>
+          <article class="screen sport">
+            <h3>Estado de plantilla</h3>
+            <code>/callups/:id/availability</code>
+            <p>Roster de convocatoria. El capitan puede cambiar confirmada/pendiente/baja y revisar score, mano, posicion y partidos.</p>
+          </article>
+          <article class="screen sport">
+            <h3>Formar alineacion</h3>
+            <code>/callups/:callUpId/lineup</code>
+            <p>Disponible solo cuando hay quorum. Genera o selecciona propuesta.</p>
+          </article>
+          <article class="screen sport">
+            <h3>Editar / ver alineacion</h3>
+            <code>/lineups/proposals/:proposalId/edit</code> <code>/lineup/proposal/:proposalId/detail</code>
+            <p>Edicion antes de crear partidos. El detalle muestra pistas, score de pista, compatibilidad y acceso a resultado.</p>
+          </article>
+          <article class="screen sport">
+            <h3>Partidos</h3>
+            <code>/matches</code> <code>/matches/:id</code>
+            <p>Punto de menu horizontal. Lista resultados, estado de partido y pendiente/completo de postpartido.</p>
+          </article>
+        </section>
+
+        <section class="lane">
+          <h2>Gestion de club <span>staff</span></h2>
+          <article class="screen sport">
+            <h3>Dashboard capitan</h3>
+            <code>/captain</code>
+            <p>Vista del equipo en horizontal, edicion de score torneo y resumen de jugados/ganados/perdidos.</p>
+          </article>
+          <article class="screen sport">
+            <h3>Listado jugadores</h3>
+            <code>/players</code>
+            <p>Listado para coach y capitan. Coach filtra por club; capitan por club y equipo.</p>
+          </article>
+          <article class="screen sport">
+            <h3>Perfil gestionable</h3>
+            <code>/players/:id</code> <code>/dashboard/players/:id</code>
+            <p>Ficha de jugador, evaluaciones, arquetipo y resumen deportivo.</p>
+          </article>
+          <article class="screen sport">
+            <h3>Evaluacion coach</h3>
+            <code>/dashboard/players/:id/coach-evals/new/edit</code>
+            <code>/dashboard/players/:id/coach-evals/:evalId/edit</code>
+            <code>/dashboard/players/:id/coach-evals/:evalId</code>
+            <p>Formulario dinamico de coach con misma experiencia que autoevaluacion.</p>
+          </article>
+          <article class="screen admin">
+            <h3>Panel coordinador</h3>
+            <code>/coordinator</code>
+            <p>Primera pantalla del coordinador de club. Gestion de club, equipos y usuarios.</p>
+          </article>
+          <article class="screen admin">
+            <h3>Administracion</h3>
+            <code>/admin</code> <code>/formsAdmin</code> <code>/admin/form-version-questions</code>
+            <p>Usuarios, clubs/equipos y gestion de formularios versionados.</p>
+          </article>
+        </section>
+      </div>
+    </section>
+
+    <section class="map-section">
+      <div class="panel">
+        <h2>Flujo de convocatoria</h2>
+        <p>La convocatoria empieza con asistencia pendiente y se bloquea progresivamente cuando se crea la alineacion, se registran resultados y se abre/cierra el postpartido.</p>
+        <div class="arrow-flow" aria-label="Estados de convocatoria">
+          <span class="state-badge">PENDING_ATTENDANCE</span><b>→</b>
+          <span class="state-badge">READY_FOR_LINEUP</span><b>→</b>
+          <span class="state-badge">MATCHES_CREATED</span><b>→</b>
+          <span class="state-badge">RESULTS_COMPLETED</span><b>→</b>
+          <span class="state-badge">POST_MATCH_OPEN</span><b>→</b>
+          <span class="state-badge">CLOSED</span>
+        </div>
+        <h3>Reglas principales</h3>
+        <div class="states">
+          <div class="state-row"><strong>PENDING_ATTENDANCE</strong><span>Aun faltan respuestas o no se alcanza el minimo. No se debe formar alineacion.</span></div>
+          <div class="state-row"><strong>READY_FOR_LINEUP</strong><span>Hay suficientes jugadoras confirmadas. Se habilita Formar Alineacion.</span></div>
+          <div class="state-row"><strong>MATCHES_CREATED</strong><span>La propuesta ya esta seleccionada y existen partidos. Se bloquean cambios de alineacion.</span></div>
+          <div class="state-row"><strong>RESULTS_COMPLETED</strong><span>Todos los partidos de la convocatoria tienen resultado guardado.</span></div>
+          <div class="state-row"><strong>POST_MATCH_OPEN</strong><span>Los jugadores pueden rellenar feedback postpartido.</span></div>
+          <div class="state-row"><strong>CLOSED</strong><span>Convocatoria cerrada. No se editan asistencias, alineacion ni feedback.</span></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Flujo de partido</h2>
+        <p>El listado de partidos muestra el resultado si existe y traduce el estado tecnico a una lectura operativa.</p>
+        <div class="arrow-flow" aria-label="Estados visuales de partido">
+          <span class="state-badge">pdtJuego</span><b>→</b>
+          <span class="state-badge">pdtPostPartido</span><b>→</b>
+          <span class="state-badge">cerrado</span>
+        </div>
+        <h3>Lectura visual</h3>
+        <div class="states">
+          <div class="state-row"><strong>pdtJuego</strong><span>No hay resultado. Capitan o coach deben entrar en <code>/matches/:id</code> desde la pista para anotar resultado.</span></div>
+          <div class="state-row"><strong>pdtPostPartido</strong><span>Ya hay resultado. Aparece feedback para jugadoras y el listado indica quien falta por responder.</span></div>
+          <div class="state-row"><strong>cerrado</strong><span>Resultado y postpartido completados. Desaparece accion de feedback.</span></div>
+        </div>
+        <h3>Estados tecnicos BD</h3>
+        <div class="states">
+          <div class="state-row"><strong>DRAFT</strong><span>Partido creado desde alineacion o manualmente, pendiente de resultado.</span></div>
+          <div class="state-row"><strong>PLAYED</strong><span>Resultado guardado. Abre el ciclo de postpartido.</span></div>
+          <div class="state-row"><strong>CLOSED</strong><span>Partido cerrado para cambios posteriores.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="map-section">
+      <div class="panel">
+        <h2>Menu horizontal siempre visible</h2>
+        <div class="states">
+          <div class="state-row"><strong>Convocatorias</strong><span><code>/callups</code>. Alta, filtros, estado y acceso a plantilla/alineacion.</span></div>
+          <div class="state-row"><strong>Partidos</strong><span><code>/matches</code>. Resultados, estado de partido y postpartido pendiente.</span></div>
+          <div class="state-row"><strong>Administracion equipos</strong><span>Segun rol: <code>/captain</code>, <code>/coordinator</code> o <code>/admin</code>.</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Menu lateral comun</h2>
+        <div class="states">
+          <div class="state-row"><strong>Compatibilidad</strong><span><code>/compatibilidad</code>. Disponible para todos los roles autenticados.</span></div>
+          <div class="state-row"><strong>Arquetipos</strong><span><code>/arquetipos</code>. Disponible para todos los roles autenticados.</span></div>
+          <div class="state-row"><strong>Rol activo</strong><span>El menu cambia entre jugador, capitan, coach, coordinador y admin sin mezclar perfiles incompatibles.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="map-section">
+      <div class="panel">
+        <h2>Flujo visual principal</h2>
+        <svg viewBox="0 0 980 560" role="img" aria-label="Diagrama de flujo principal">
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="#7d8797"></path>
+            </marker>
+            <style>
+              .box { fill: #fff; stroke: #d8dee8; stroke-width: 2; rx: 8; }
+              .box2 { fill: #f7f3ff; stroke: #c4b5fd; stroke-width: 2; rx: 8; }
+              .box3 { fill: #ecfdf5; stroke: #86efac; stroke-width: 2; rx: 8; }
+              .t { font: 700 18px Inter, sans-serif; fill: #172033; }
+              .s { font: 12px Inter, sans-serif; fill: #657086; }
+              .a { stroke: #7d8797; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+            </style>
+          </defs>
+
+          <rect class="box" x="38" y="40" width="170" height="76" rx="8"></rect>
+          <text class="t" x="60" y="74">Login</text>
+          <text class="s" x="60" y="96">/login-clasico</text>
+
+          <rect class="box" x="282" y="28" width="190" height="66" rx="8"></rect>
+          <text class="t" x="304" y="62">Jugador</text>
+          <text class="s" x="304" y="83">/player/dashboard</text>
+
+          <rect class="box" x="282" y="114" width="190" height="66" rx="8"></rect>
+          <text class="t" x="304" y="148">Capitan</text>
+          <text class="s" x="304" y="169">/captain</text>
+
+          <rect class="box" x="282" y="200" width="190" height="66" rx="8"></rect>
+          <text class="t" x="304" y="234">Coach</text>
+          <text class="s" x="304" y="255">/players</text>
+
+          <rect class="box" x="282" y="286" width="190" height="66" rx="8"></rect>
+          <text class="t" x="304" y="320">Coord/Admin</text>
+          <text class="s" x="304" y="341">/coordinator /admin</text>
+
+          <rect class="box2" x="560" y="76" width="180" height="70" rx="8"></rect>
+          <text class="t" x="582" y="108">Convocatorias</text>
+          <text class="s" x="582" y="130">/callups</text>
+
+          <rect class="box2" x="560" y="178" width="180" height="70" rx="8"></rect>
+          <text class="t" x="582" y="210">Alineacion</text>
+          <text class="s" x="582" y="232">/callups/:id/lineup</text>
+
+          <rect class="box3" x="560" y="280" width="180" height="70" rx="8"></rect>
+          <text class="t" x="582" y="312">Partidos</text>
+          <text class="s" x="582" y="334">/matches</text>
+
+          <rect class="box3" x="792" y="280" width="150" height="70" rx="8"></rect>
+          <text class="t" x="814" y="312">Resultado</text>
+          <text class="s" x="814" y="334">/matches/:id</text>
+
+          <rect class="box" x="792" y="386" width="150" height="70" rx="8"></rect>
+          <text class="t" x="814" y="418">Feedback</text>
+          <text class="s" x="814" y="440">postpartido</text>
+
+          <path class="a" d="M208 78 C240 78, 248 62, 282 62"></path>
+          <path class="a" d="M208 88 C240 104, 248 147, 282 147"></path>
+          <path class="a" d="M208 96 C244 150, 248 232, 282 232"></path>
+          <path class="a" d="M208 104 C244 190, 248 318, 282 318"></path>
+          <path class="a" d="M472 147 C506 147, 522 112, 560 112"></path>
+          <path class="a" d="M650 146 C650 160, 650 166, 650 178"></path>
+          <path class="a" d="M650 248 C650 264, 650 268, 650 280"></path>
+          <path class="a" d="M740 315 C762 315, 770 315, 792 315"></path>
+          <path class="a" d="M867 350 C867 366, 867 374, 867 386"></path>
+        </svg>
+      </div>
+
+      <aside class="panel">
+        <h2>Lectura para presentacion</h2>
+        <div class="states">
+          <div class="state-row"><strong>1. Acceso</strong><span>El usuario entra por login/registro y la app resuelve automaticamente el rol activo.</span></div>
+          <div class="state-row"><strong>2. Gestion</strong><span>Convocatorias, Partidos y Administracion equipos son los tres bloques operativos.</span></div>
+          <div class="state-row"><strong>3. Convo</strong><span>Hasta que no se crean partidos se puede gestionar asistencia y alineacion con limites.</span></div>
+          <div class="state-row"><strong>4. Partido</strong><span>Al guardar resultado se abre el postpartido; cuando las jugadoras responden queda cerrado.</span></div>
+          <div class="state-row"><strong>5. Analitica</strong><span>Resultados y postpartido alimentan perfiles, score y futuras alineaciones.</span></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="shot-grid" aria-label="Espacio para capturas">
+      <article class="shot">
+        <div class="browserbar"><i></i><i></i><i></i></div>
+        <div class="placeholder"><strong>1. Login clasico</strong><span>Entrada QA local con email y contrasena.</span><a class="screenshot-link" href="screenshots/screen-login-clasico.png" target="_blank" rel="noopener"><img class="screenshots" src="screenshots/screen-login-clasico.png" alt="Login clasico"></a><a class="open-shot" href="screenshots/screen-login-clasico.png" target="_blank" rel="noopener">Abrir captura</a></div>
+      </article>
+      <article class="shot">
+        <div class="browserbar"><i></i><i></i><i></i></div>
+        <div class="placeholder"><strong>2. Dashboard jugador</strong><span>Convocatorias pendientes, nivel, arquetipo y equipo.</span><a class="screenshot-link" href="screenshots/role-player-dashboard.png" target="_blank" rel="noopener"><img class="screenshots" src="screenshots/role-player-dashboard.png" alt="Dashboard jugador"></a><a class="open-shot" href="screenshots/role-player-dashboard.png" target="_blank" rel="noopener">Abrir captura</a></div>
+      </article>
+      <article class="shot">
+        <div class="browserbar"><i></i><i></i><i></i></div>
+        <div class="placeholder"><strong>3. Perfil jugador</strong><span>Datos deportivos, mano dominante, posicion y equipos.</span><a class="screenshot-link" href="screenshots/role-player-profile.png" target="_blank" rel="noopener"><img class="screenshots" src="screenshots/role-player-profile.png" alt="Perfil jugador"></a><a class="open-shot" href="screenshots/role-player-profile.png" target="_blank" rel="noopener">Abrir captura</a></div>
+      </article>
+      <article class="shot">
+        <div class="browserbar"><i></i><i></i><i></i></div>
+        <div class="placeholder"><strong>4. Dashboard capitan</strong><span>Equipo, score torneo y balance de partidos.</span><a class="screenshot-link" href="screenshots/role-captain-dashboard.png" target="_blank" rel="noopener"><img class="screenshots" src="screenshots/role-captain-dashboard.png" alt="Dashboard capitan"></a><a class="open-shot" href="screenshots/role-captain-dashboard.png" target="_blank" rel="noopener">Abrir captura</a></div>
+      </article>
+      <article class="shot">
+        <div class="browserbar"><i></i><i></i><i></i></div>
+        <div class="placeholder"><strong>5. Convocatorias</strong><span>Listado filtrable con estado y acciones segun quorum.</span><a class="screenshot-link" href="screenshots/role-captain-callups.png" target="_blank" rel="noopener"><img class="screenshots" src="screenshots/role-captain-callups.png" alt="Convocatorias"></a><a class="open-shot" href="screenshots/role-captain-callups.png" target="_blank" rel="noopener">Abrir captura</a></div>
+      </article>
+      <article class="shot">
+        <div class="browserbar"><i></i><i></i><i></i></div>
+        <div class="placeholder"><strong>6. Partidos</strong><span>Resultados visibles y estado pdtJuego / pdtPostPartido / cerrado.</span><a class="screenshot-link" href="screenshots/role-captain-matches.png" target="_blank" rel="noopener"><img class="screenshots" src="screenshots/role-captain-matches.png" alt="Partidos"></a><a class="open-shot" href="screenshots/role-captain-matches.png" target="_blank" rel="noopener">Abrir captura</a></div>
+      </article>
+      <article class="shot">
+        <div class="browserbar"><i></i><i></i><i></i></div>
+        <div class="placeholder"><strong>7. Listado coach</strong><span>Vista de jugadores para rol coach.</span><a class="screenshot-link" href="screenshots/role-coach-players.png" target="_blank" rel="noopener"><img class="screenshots" src="screenshots/role-coach-players.png" alt="Listado coach"></a><a class="open-shot" href="screenshots/role-coach-players.png" target="_blank" rel="noopener">Abrir captura</a></div>
+      </article>
+      <article class="shot">
+        <div class="browserbar"><i></i><i></i><i></i></div>
+        <div class="placeholder"><strong>8. Coordinador</strong><span>Panel de administracion de club.</span><a class="screenshot-link" href="screenshots/role-coordinator-panel.png" target="_blank" rel="noopener"><img class="screenshots" src="screenshots/role-coordinator-panel.png" alt="Panel coordinador"></a><a class="open-shot" href="screenshots/role-coordinator-panel.png" target="_blank" rel="noopener">Abrir captura</a></div>
+      </article>
+      <article class="shot">
+        <div class="browserbar"><i></i><i></i><i></i></div>
+        <div class="placeholder"><strong>9. Admin</strong><span>Panel de administracion global.</span><a class="screenshot-link" href="screenshots/role-admin-panel.png" target="_blank" rel="noopener"><img class="screenshots" src="screenshots/role-admin-panel.png" alt="Panel admin"></a><a class="open-shot" href="screenshots/role-admin-panel.png" target="_blank" rel="noopener">Abrir captura</a></div>
+      </article>
+      <article class="shot">
+        <div class="browserbar"><i></i><i></i><i></i></div>
+        <div class="placeholder"><strong>10. Compatibilidad</strong><span>Vista comun para roles autenticados.</span><a class="screenshot-link" href="screenshots/screen-compatibilidad.png" target="_blank" rel="noopener"><img class="screenshots" src="screenshots/screen-compatibilidad.png" alt="Compatibilidad"></a><a class="open-shot" href="screenshots/screen-compatibilidad.png" target="_blank" rel="noopener">Abrir captura</a></div>
+      </article>
+      <article class="shot">
+        <div class="browserbar"><i></i><i></i><i></i></div>
+        <div class="placeholder"><strong>11. Arquetipos</strong><span>Catalogo de arquetipos de juego.</span><a class="screenshot-link" href="screenshots/screen-arquetipos.png" target="_blank" rel="noopener"><img class="screenshots" src="screenshots/screen-arquetipos.png" alt="Arquetipos"></a><a class="open-shot" href="screenshots/screen-arquetipos.png" target="_blank" rel="noopener">Abrir captura</a></div>
+      </article>
+    </section>
+
+    <footer>
+      Actualizado desde `apps/web/src/App.tsx`, `AppMenu.tsx`, `Navbar.tsx`, `apps/api/prisma/schema.prisma` y los servicios de convocatorias/partidos.
+    </footer>
+  </main>
+</body>
+</html>
