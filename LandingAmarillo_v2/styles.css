@@ -369,11 +369,13 @@ img {
 ============================ */
 .problem {
   padding: 96px 0;
+  text-align: center;
   background: var(--white);
 }
 
 .problem__header {
-  max-width: 560px;
+  max-width: 100%;
+  
   margin-bottom: 64px;
 }
 

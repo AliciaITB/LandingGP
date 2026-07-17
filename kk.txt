@@ -1,0 +1,27 @@
+
+IdPartido
+IdConvocatoria
+Fecha
+Pareja (Jugador1-Jugador2)
+Resultado_Set1
+Resultado_Set2
+Resultado_Set3
+
+NivelRival (Mas fuerte / Similar / Mas debil)
+OutdoorIndoor
+Pista (Indoor / Outdoor)Condiciones (Normal / Viento / Sol / Frío)Pista rápida / pista lenta.
+FuncionamientoPareja (Mal / Regular / Bien / Muy bien)
+
+FortalezaPrincipal (Consistencia / Ataque / Control / Defensa / Comunicacion)
+ProblemaPrincipal (Errores no forzados / Falta agresividad / Desorden tactico / Mala comunicacion / Bloqueo mental)
+
+MomentoClave (set1, set2, set3)
+FactorClave (Errores propios / Aciertos propios / Nivel rival / Factor mental)
+
+RepetirPareja (Si / No / Depende rival)
+
+
+EstadoEmocional (Confiadas / Neutrales / Tensas)
+ComunicacionPareja (Buena / Irregular / Mala)
+
+InsightClave (Texto libre)
